@@ -12,17 +12,26 @@ class RegisrtController extends Controller
         if(Auth::check()){
             return redirect(route('user.profile'));
         }
-        $validateData=$request->validate([
-            'name'=>'required',
-            'surname'=>'required',
-            'email'=>'required',
-            'password'=>'required',
-        ]);
-        if(User::where('email',$validateData['email'])->exists()){
+        if($request['password']!==$request['confirm']) {
             return redirect(route('user.sign-up'))->withErrors([
-                'email'=>'This email is a bizi'
+                'confirm' => 'Passwords is not ==',
+                'password'=>'Password is not a ecvivalanet'
+
             ]);
         }
+        $validateData=$request->validate([
+            'name'=>'required|alpha_dash|min:3',
+            'surname'=>'required|alpha_dash|min:3',
+            'email'=>'required|unique:users|email|max:255',
+            'password'=>'required|min:8',
+            'confirm'=>'required'
+        ]);
+
+//        if(User::where('email',$validateData['email'])->exists()){
+//            return redirect(route('user.sign-up'))->withErrors([
+//                'email'=>'This email is a bizi'
+//            ]);
+//        }
         $user=User::create($validateData);
         if($user){
             \ Auth::login($user);

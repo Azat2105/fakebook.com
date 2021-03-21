@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
+
     public function login(Request $request){
         if(\Auth::check()){
             return redirect(route('user.profile'));
@@ -17,7 +18,8 @@ class LoginController extends Controller
           return redirect()->intended(route('user.profile'));
        }
        return redirect('sign-in')->withErrors([
-           'email'=>'Sxal mutqayin tvyalner'
+           'email'=>'Sxal mutqayin tvyalner',
+           'password'=>'Sxal mutqayin tvyalner'
        ]);
     }
 }
